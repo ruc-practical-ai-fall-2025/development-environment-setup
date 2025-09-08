@@ -563,7 +563,11 @@ echo $PATH | tr ':' '\n'
 
 The first part of this command (`echo $PATH`) prints your `$PATH` to the screen. The second part of the command (`| tr ':' '\n'`) exchanges all the `:` characters for newlines so you can see the paths more clearly.
 
-If this command confirms that your OS is looking for Python in the wrong place, then you need to edit your `$PATH` variable. It is possible to edit your `$PATH` on the command line but it is safer to do so using the OS' built in tools. To edit the $PATH on Windows do the following steps.
+If this command confirms that your OS is looking for Python in the wrong place, then you need to edit your `$PATH` variable.
+
+If you are running Unix / Linux / Mac, or using Git Bash, you can find tutorials online for changing your PATH in bash, by editing `.bash_profile` or other similar configuration files. A good explanation of this can be found [here](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path).
+
+**WARNING**: If you are on Windows and NOT using these tools, it is possible to edit your `$PATH` on the command line but this is dangerous and not recommended, as a mistake can break your system and be difficult to fix. It is *highly recommended* to use Git Bash or another terminal emulator on Windows to manage your path. If you *must* edit your `$PATH` on Windows without using Git Bash or a terminal emulator, it is safer to do so using the OS' built in tools. To edit the `$PATH` on Windows *without* changing Git Bash files, do the following steps. (**Again, only do this as a last resort!**)
 
 1. Search “Advanced system settings”
 2. Go to “Advanced”
@@ -572,9 +576,7 @@ If this command confirms that your OS is looking for Python in the wrong place, 
 5. Click “New”
 6. Enter the path to the folder you want on your PATH.
 
-If you are running Unix / Linux / Mac, or using Git Bash, you can find tutorials online for changing your PATH in bash, by editing `.bash_profile` or other similar configuration files. A good explanation of this can be found [here](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path).
-
-**Note**: be careful editing your PATH on the command line in Windows! Changing your PATH can change the way some programs will function. The best way to change your path is using a graphical tool provided by your OS or by editing files such as `.bash_profile`. Editing `.bash_profile` (covered later in this tutorial) is usually the preferred method since it is easy to change, but you should know how to use your OS' graphical tool as well since `.bash_profile` only applies when using `Git Bash` or `Bash` and there are times when you may wish to add something to your path and have it show up on your path all the time.
+**WARNING**: be careful editing your PATH! Changing your PATH can change the way some programs will function. The safest way to change your path is by editing files such as `.bash_profile`. Editing `.bash_profile` (covered later in this tutorial) is usually the preferred method since it is easy to change, but you should know how to use your OS' graphical tool as well since `.bash_profile` only applies when using `Git Bash` or `Bash` and there are times when you may wish to add something to your path and have it show up on your path all the time.
 
 ### Understanding Where Python is Installed on Your System
 
@@ -664,11 +666,15 @@ In VS Code, you can set your desired Python interpreter via the following steps.
 2. Type "Python: Select Interpreter"
 3. Select your desired version of Python
 
+A full tutorial on getting set up with VS Code is included below.
+
 #### When Using a Jupyter Notebook
 
 When using a Jupyter notebook inside VS Code, you can see which version of Python the IDE is using to execute the notebook by looking in the top right corner of the notebook.
 
 If you want to change the version VS Code uses for that notebook, click it, then click "select another kernel" in the command palette, then select your desired interpreter.
+
+A full tutorial on Jupyter is provided below.
 
 #### When Installing Packages with pip
 
@@ -695,6 +701,8 @@ pip3.12 install mpmath # Install mpmath for Python 3.12
 ```
 
 ### Managing Multiple Versions of Python: Helpful Tools
+
+TODO (MJS): Update
 
 It is important to understand where Python is installed on your system, how to check which version you are interacting with at any given time, and how to interact with the version you intend to be interacting with. You can do this manually, or you can use one of many available tools. Managing your Python versions manually is recommended initially in an educational setting so you do not loose track of the functions the tools are performing for you. In a professional setting however, you will often need to keep track of many projects using many versions of Python, and using various tools to do this will be standard practice on a team.
 
