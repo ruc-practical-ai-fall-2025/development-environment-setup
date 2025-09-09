@@ -430,7 +430,7 @@ $$
 
 #### Folders are Files!
 
-When working with folders, it is helpful to know that Unix-derived operating systems treat them as files, and emulations of Unix tools emulate this behavior. To a Unix system, a folder is just a file that keeps track of which files human users expect to be in a particular location and which users have permissions to access them. With this in mind, it is easy to understand that changing the permissions of a folder simply changes the permissions of the file the indexes the contents of that folder. For example, making a folder writeable by a user does not by default make all folders beneath it writeable, it only means that user can add other folders to it.
+When working with folders, it is helpful to know that Unix-derived operating systems treat them as files, and emulations of Unix tools emulate this behavior. To a Unix system, a folder is just a file that keeps track of which files human users expect to be in a particular location and which users have permissions to access them. With this in mind, it is easy to understand that changing the permissions of a folder simply changes the permissions of the file that indexes the contents of that folder. For example, making a folder writeable by a user does not by default make all folders beneath it writeable, it only means that user can add other folders to it.
 
 #### Common Chmod Examples
 
@@ -464,7 +464,7 @@ Use this command with caution. Think if you really want *all* files beneath a fo
 
 #### Scope of Permission Changes and Differences between Operating System Permissions vs. Git Hub Visibility
 
-Remember that the permission changes you apply will only apply to the computer that you are applying them on. If you make a file world-readable on your local computer, it is still subject to any protections provided by your firewall, network router, etc. and therefore not truly readable by "the world." However, if you are working on a shared network (such as a shared university high performance computing cluster) making a file world readable *will* make it accessible to other students on that same network. Be very careful making files group-writable or world-writeable on shared computers since your teammates can accidentally modify them if you do that!
+Remember that the permission changes you apply will only apply to the computer network that you are applying them on. If you make a file world-readable on your local computer, it is still subject to any protections provided by your firewall, network router, etc. and therefore not truly readable by "the world." However, if you are working on a shared network (such as a shared university high performance computing cluster) making a file world readable *will* make it accessible to other students on that same network. Be very careful making files group-writable or world-writeable on shared computers since your teammates can accidentally modify them if you do that!
 
 Also remember that Git Hub has its own permission management system and the permissions that you apply on the computer you develop on (whether a local or remote machine) are not related to whether or not someone can access your code via Git Hub in the cloud. Git Hub provides users the ability to make repositories public (truly viewable by the world on the internet) or private (only viewable to the user). These permissions must be configured in Git Hub itself and do not inherit from anything specified via `chmod`.
 
@@ -740,7 +740,7 @@ VS Code has many [keyboard shortcuts](https://code.visualstudio.com/shortcuts/ke
 
 #### Opening VS Code
 
-You should have a shortcut on your desktop to open VS Code. If not, create one by searching for VS Code in your OS, opening its location, copying, and pasting a shortcut to your desktop. You can also open VS Code by searching for it in your OS search bar as you would any other program.
+Once you have VS Code installed, you should have a shortcut on your desktop to open it. If not, create one by searching for VS Code in your OS, opening its location, copying, and pasting a shortcut to your desktop. You can also open VS Code by searching for it in your OS search bar as you would any other program.
 
 To open VS Code in a particular folder, right click (or control-click for MacOS) that folder and click "Open with Code".
 
