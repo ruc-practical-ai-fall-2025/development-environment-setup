@@ -257,6 +257,56 @@ cd ../..    # Move up two directories
 cd ../../.. # Move up three directories
 ```
 
+#### Tip: Understanding the Single Dot, `.`, and Relative vs. Absolute Paths
+
+Many commands will use a single dot, i.e., `.`. This is shorthand for the current directory (the directory the command is being run from). For example, the command
+
+```bash
+git add .
+```
+
+Means add any files that have changes under the *current* directory. You will see a single dot sometimes in paths, such as the following.
+
+```bash
+./venv/bin
+./venv/lib
+```
+
+In this case, the first dot means that the paths are specified relevant to the current directory. Using this notation is convenient since some paths or commands can be specified in a way that will not break if they need to be run again from a different directory. A path specifying the locations of folders or files relative to the current directory is called a *relative path*. Conversely, a path specifying the locations of folders or files relative to the root of the file system (`/`) is called an *absolute path*.
+
+An example of a relative path is:
+
+```bash
+./path/to/my_script.py
+```
+
+An example of an absolute path is:
+
+```bash
+/c/Users/username/my_scripts/path/to/my_script.py
+```
+
+When using a relative path, remember that the current working directory of the process that is referencing the relative path will be used to access the file being referenced. You can find out the current working directory of the process that is using the reference by having the process call the `pwd` command. Note that the working directory of the process might not be the same as the working directory you are current in or the directory that you opened your terminal from!
+
+To see how this works, make a quick script (shell scripting will be explained later on in this tutorial):
+
+```bash
+echo 'cd .. && pwd' > example.sh
+```
+
+Then run the following commands:
+
+```bash
+pwd # Run pwd directly from the terminal
+/bin/bash example.sh # Run pwd from inside a script
+```
+
+Observe how the pwd command run directly from the terminal (the first command) returns a different result than the one run from inside the script. This is because a new terminal (without a user interface) was spawned under the hood as a new process (i.e., a *subprocess*) to run the script.
+
+That new terminal now has a working directory of its own, independent of the working directory of the process that spawned it (i.e., the *parent* process). The `cd` command in the subprocess changed its working directory to be different than the parent directory.
+
+In practice, we do not normally make scripts by echoing the commands we want to run from the command line, but it is good practice for using the command line here.
+
 #### Making Directories
 
 Use the `mkdir` command to make new directories.
@@ -432,7 +482,7 @@ $$
 
 When working with folders, it is helpful to know that Unix-derived operating systems treat them as files, and emulations of Unix tools emulate this behavior. To a Unix system, a folder is just a file that keeps track of which files human users expect to be in a particular location and which users have permissions to access them. With this in mind, it is easy to understand that changing the permissions of a folder simply changes the permissions of the file that indexes the contents of that folder. For example, making a folder writeable by a user does not by default make all folders beneath it writeable, it only means that user can add other folders to it.
 
-#### Common Chmod Examples
+#### Common `chmod` Examples
 
 The follow are common uses of the `chmod` command.
 
@@ -531,7 +581,7 @@ pip install matplotlib
 
 Python is useful for quickly implementing programs and in many cases implementing production systems. Like any programming language it has advantages and disadvantages. An in depth discussion of programming language design is outside the scope of this tutorial, but at a high level, it is important to understand that Python is an *interpreted* programming language. This means that Python code for programs you write is run line-by-line in another computer program (the Python interpreter) which is downloaded for you when you download Python.
 
-What that means practically is that another program sits between Python code and the actual way the computer executes the instructions provided in a Python program. Python has many incredible features which prevent these extra computations from slowing down program execution. Python also manages system memory for the user, which takes this burden off the developer and means it is safer to use than languages like C and C++ with respect to avoiding system memory usage errors. Despite its powerful features though, Python is not always as fast or as customizable at the hardware level as a compiled language like C++, which is prepared for execution by a compiler that runs before the program executes rather than interpreted by another layer of software. Importantly, a Python program might not always take the same amount of time to run by default, even if running on a fast computer with no other programs competing for the computer's resources. This makes Python a less ideal choice for running in real time.
+What that means practically is that another program sits between Python code and the way the computer executes the instructions provided in a Python program. Python has many incredible features which prevent these extra computations from slowing down program execution. Python also manages system memory for the user, which takes this burden off the developer and means it is safer to use than languages like C and C++ with respect to avoiding system memory usage errors. Despite its powerful features though, Python is not always as fast or as customizable at the hardware level as a compiled language like C++, which is prepared for execution by a compiler that runs before the program executes rather than interpreted by another layer of software. Importantly, a Python program might not always take the same amount of time to run by default, even if running on a fast computer with no other programs competing for the computer's resources. This makes Python a less ideal choice for running in real time.
 
 Many international standards forbid using Python (and many other programming languages) in safety critical systems. Simultaneously, many international standards also forbid using C and C++, or some features of those languages, due to memory safety issues. Some programming languages, such as Rust, are gaining popularity to address these issues, but these are outside the scope of this tutorial and course. Deep discussion of safety standards and the differences between interpreted and compiled languages is further outside the scope of this tutorial, but it is important to remember that interpreted languages like Python are often preferred for offline data analysis (e.g., playing back data from a self-driving car for analysis) while compiled languages are preferred for speed and control of execution (e.g., for running real time in the sensor processing system of a self-driving car). Safety critical systems often use specialized languages, or standards compliant subsets of embedded languages, like C. In professional practice, the choice of programming languages to use for each component of a safety-relevant or safety critical system is an important design decisions which must be made judiciously with consideration to applicable standards, laws, customer requirements / approvals, and engineering constraints.
 
@@ -726,7 +776,7 @@ Further, remember when using containers, you still must understand what tool you
 
 ### Introduction
 
-VS Code is a free integrated development environment (IDE) by Microsoft. An IDE is a collection of tools to develop software. Modern IDEs can be augmented with various packages and extensions. You are encouraged to search for useful extensions to help you as you take on assignments. While you are welcome to use any IDE you like for this class, VS Code is highly recommended. VS Code is so popular currently that getting help from your classmates and the internet will be much easier using it.
+VS Code is a free integrated development environment (IDE) by Microsoft. An IDE is a collection of tools to develop software which are integrated into a convenient user interface so they are accessible through a single application. Modern IDEs can be augmented with various packages and extensions. You are encouraged to search for useful extensions to help you as you take on assignments. While you are welcome to use any IDE you like for this class, VS Code is highly recommended. VS Code is so popular currently that getting help from your classmates and the internet will be much easier if you are using it.
 
 ### Installation
 
@@ -779,6 +829,24 @@ Note the path for the Python version you intend to use. Open your User Setting J
 "python.defaultInterpreterPath": "/Path/To/Your/Preferred/Python/python"
 ```
 
+Using tools like Poetry, we will also be generating Python virtual environments inside our project folders. This allows each project to maintain its own version of Python with its own project-specific list of packages. To tell VS Code where these are, you will want to add them to your settings (using the same commands as above). Adding the directories `./.venv/bin` and `./.venv/lib` to your `python.autoComplete.extraPaths` and `python.analysis.extraPaths` lists will ensure that Python autocomplete and analysis tools look in these locations for a version of Python and associated packages in addition to the base version of Python that you have installed on your system.
+
+TODO
+
+```json
+"python.autoComplete.extraPaths": [
+    "./.venv/bin",
+    "./.venv/lib",
+    "~/AppData/Local/Programs/Python/Python313/Scripts",
+],
+"python.analysis.extraPaths": [
+    "./.venv/bin",
+    "./.venv/lib",
+    "~/AppData/Local/Programs/Python/Python313/Scripts",
+    "~/AppData/Local/Programs/Python/Python313/Lib/site-packages",
+],
+```
+
 For example, your settings file might look like this after you set this up:
 
 ```json
@@ -791,13 +859,24 @@ For example, your settings file might look like this after you set this up:
             "source.organizeImports": "explicit"
         },
     },
-    "python.defaultInterpreterPath": "/c/Users/sanch/AppData/Local/Programs/Python/Python312/python"
+    "python.defaultInterpreterPath": "/c/Users/sanch/AppData/Local/Programs/Python/Python312/python",
+    "python.autoComplete.extraPaths": [
+        "./.venv/bin",
+        "./.venv/lib",
+        "~/AppData/Local/Programs/Python/Python313/Scripts",
+    ],
+    "python.analysis.extraPaths": [
+        "./.venv/bin",
+        "./.venv/lib",
+        "~/AppData/Local/Programs/Python/Python313/Scripts",
+        "~/AppData/Local/Programs/Python/Python313/Lib/site-packages",
+    ]
 }
 ```
 
 #### Making and Running a Python Script
 
-To make a Python script, create a new file with `Ctrl` + `N`. Type the following line and save the file as `hello.py`.
+To make a Python script, create a new file in VS Code with `Ctrl` + `N`. Type the following line and save the file as `hello.py`.
 
 ```python
 print('Hello World!')
@@ -854,7 +933,11 @@ To see the list of keyboard shortcuts that VS Code has configured for you, use `
 
 ### Introduction
 
-Jupyter is a notebook environment for programming in Python. It allows you to see your data and visualizations of your data right next to your code. In this way, Jupyter enables practicing one of the most important principles from Tufte's The Visual Display of Quantitative Information, which states that visualizations should be embedded within the documents that describe them. For this and many other reasons, Jupyter is convenient for development, data visualization, and experimentation. We will go over Jupyter in detail and use it many times throughout this class.
+Jupyter is a notebook environment for programming in Python. Jupyter provides two main advantages which make it a popular choice for data science and machine learning projects, especially in early stages of development. Fist, Jupyter displaying data and visualizations of the data next to the code, alongside equations and typeset markdown documentation. In this way, Jupyter enables practicing one of the most important principles of data visualization (as given in the ubiquitous reference, The Visual Display of Quantitative Information by Tufte), which states that visualizations should be *embedded within the documents that describe them*.
+
+Second, Jupyter allows executing code in cells, which means that code can be executed out of order. This is helpful for iterative development. You might want to write some code to load in data, run the code, adjust, and repeat until the data is loaded correctly. This type of nonlinear (out of order) execution is common in machine learning workflows, which often require significant iteration and adjustment to meet requirements. Developing the workflow in the early stages of the project directly next to associated visualizations before rushing to implement a full product aids proper requirements development for the full product and is often preferred over writing production code prematurely.
+
+We will go over Jupyter in detail and use it many times throughout this class.
 
 ### Installation
 
@@ -881,11 +964,11 @@ pip install jupyterlab
 
 Jupyter notebooks are comprised of *cells*. You can make a new cell and tell Jupyter whether you want this to be a code cell or a markdown cell. Use markdown cells to organize your notebooks by adding headers and documentation. Use code cells to add the code you want to run. You can add markdown and code cells with the `+ Markdown` and `+ Code` buttons respectively.
 
-To run a Jupyter cell, press `Shift` + `Enter`. Note that unlike a Python script, where all lines will execute in the same order, it is easy to run Jupyter cells out of order. If done on purpose, this can be useful for prototyping and debugging (e.g., to run an interesting section of code multiple times before moving on to the next). However, if Jupyter cells are run out of order by accident, a program may not run as intended.
+To run a Jupyter cell, press `Shift` + `Enter`. Note that unlike a Python script, where all lines will execute in the same order, it is easy to run Jupyter cells out of order. As noted above, this can be useful for prototyping and debugging (e.g., to run an interesting section of code multiple times before moving on to the next). However, if Jupyter cells are run out of order by accident, a program may not run as intended.
 
 If you lose track of the order your Jupyter cells have been running in, you can use the `Restart` button to restart all cells. You can clear all old outputs with the `Clear All Outputs` button. You can run all cells in order (useful for checking the full functionality of a notebook before turning in an assignment or handing over to a colleague) using the `Run All` button.
 
-One example of the usefulness of Jupyter cells is in training machine learning models. When training a machine learning model, you may wish to try to train it, look at some visualizations to see how well it fits the data, and then retrain it if it does not fit well before moving on to test it. You may implement this workflow in Jupyter by having a "train" cell, a "visualization" cell, and a "test" cell. Then you can run the train cell multiple times, checking the visualization cell after each (and potentially running that cell a few times to adjust your plots) before moving on to the test cell once you are satisfied.
+One example of the usefulness of Jupyter cells' nonlinear execution flow is in training machine learning models. When training a machine learning model, you may wish to try to train it, look at some visualizations to see how well it fits the data, and then retrain it if it does not fit well before moving on to test it. You may implement this workflow in Jupyter by having a "train" cell, a "visualization" cell, and a "test" cell. Then you can run the train cell multiple times, checking the visualization cell after each (and potentially running that cell a few times to adjust your plots) before moving on to the test cell once you are satisfied.
 
 ## Poetry
 
@@ -895,7 +978,7 @@ Assignments and class notes will manage their dependencies with Poetry. Being an
 
 When working on complex projects in Python, it can be difficult to keep track of what modules (e.g., `numpy`, `pandas`) and what versions of those modules your program depends on. Poetry is a useful tool for doing this.
 
-Poetry helps with Python dependency management by completely automating the creation of a `pyproject.toml` file, which is a file used by Python build systems to define the dependencies needed by a Python package (collection of Python modules, themselves being `*.py` files, organized into an installable tool) in a folder. Poetry can then use a `pyproject.toml` file to automatically create a virtual environment for that specific project, which is self contained in a folder inside that project's directory (or in another location of your chosing).
+Poetry helps with Python dependency management by completely automating the creation of a `pyproject.toml` file, which is a file used by Python build systems to define the dependencies needed by a Python package (collection of Python modules, themselves being `*.py` files, organized into an installable tool) in a folder. Poetry can then use a `pyproject.toml` file to automatically create a virtual environment for that specific project, which is self contained in a folder inside that project's directory (or in another location of your choosing).
 
 This is a lighter weight method of managing the project's dependencies in a self-contained manner using a container and requires much less setup time compared to a container as long as we are familiar with the basic Poetry commends. For example, if we realize we forgot a dependency, we can simply add it with `poetry add <dependency>`. Poetry will then take care of updating our `pyproject.toml`, ensuring the versions of each package specified in the `pyproject.toml` do not conflict with each other. This automated management of version conflicts is one of the most powerful features of Poetry.
 
@@ -912,32 +995,70 @@ Open PowerShell and run the following command.
 
 If you have installed Python through the Microsoft Store, replace py with python in the command above.
 
-Use the following instructions to add Poetry to your path so Windows knows where to find it.
+For Poetry to work properly, it will need to be on your path so that your shell knows where to find it. To do this, you will first need to know where Poetry was installed to. The best way to do this is to note where the installer placed it. If you did not note where the installer placed it, you might need to look around your system. Try searching to see where Poetry is typically installed for your OS. For Windows, Poetry is usually placed in a subfolder under `$APPDATA`. You can find our where `$APPDATA` is by opening Git Bash and doing:
 
-1. Search for System Properties.
-2. In the System Properties dialog box, click the Advanced tab.
-3. Click Environment Variables.
-4. In the top list, scroll down to the PATH variable, select it, and click Edit. Note: If the PATH variable does not exist, click New and enter PATH for the Variable Name.
-5. In the Variable Value box, scroll to the end of the variable. If there is no semi-colon (;) at the end of the current path, add one, and then enter the path to the MicroStation folder.
-6. Click OK to close each dialog box.
+```bash
+echo "$APPDATA"
+```
 
-You will need to find out where the installer placed Poetry's files. For Windows, these are usually at `%APPDATA%\pypoetry\venv\Scripts\`. This is the location you want to add to your path.
+A common Poetry install location for Windows is `$APPDATA/pypoetry/venv/Scripts/`. Confirm that Poetry exists at this (or another) location by running it and checking its version using the following command.
 
-Confirm poetry works by closing and reopening Git Bash, and then typing the following command.
+```bash
+$APPDATA/pypoetry/venv/Scripts/poetry.exe --version
+```
+
+If your system has Poetry at a different path, be sure find out where and edit the above command to use the actual path to Poetry on your system. Once you can get the `poetry.exe` file to print its version and confirm this is the version of Poetry that you actually installed, then you can add the folder in which this file resides to your `$PATH`. For example, if you found poetry at `$APPDATA/pypoetry/venv/Scripts/poetry.exe` then you will need to add `$APPDATA/pypoetry/venv/Scripts` to your `$PATH`. The preferred way to do this is by editing your `.bash_profile` to add the following lines:
+
+```bash
+# Poetry paths
+POETRY_PATH="$APPDATA/pypoetry/venv/Scripts"
+export PATH="$POETRY_PATH:$PATH"
+```
+
+After you add these lines, source your `.bash_profile` via
+
+```bash
+source .bash_profile
+```
+
+or restart your terminal so the updates take effect. Check your path with
+
+```bash
+echo $PATH | tr ':' '\n' | grep poetry
+```
+
+to see if Poetry is on your path. If successful, you should see something like `/system/specific/path/pypoetry/venv/Scripts` (where `/system/specific/path` is replaced by some path specific to your setup).
+
+Finally, confirm Poetry is working by checking its version and confirming this is indeed the Poetry that you installed.
 
 ```bash
 poetry --version
 ```
 
+### Configuration
+
+In this class, we will use Poetry to create virtual environments inside our project's current directory. This means that each project we build will have its own version of Python, nested inside the project's main folder, with *all* dependencies needed to run. This is useful since we will try out many different tools across projects. By using Poetry in this way, we will not have to worry about tool compatibility between projects.
+
+Note that the tradeoff in configuring Poetry to create its own virtual environment in each project is overall system memory usage. We will need enough hard drive space to hold multiple installations of Python. However, for a modern computer with hundreds of GB of storage, this is no problem, even for large Python libraries.
+
+To tell Poetry you want it to create virtual environments in your current directory (so you can have different virtual environments per project), use the following command.
+
+```bash
+poetry config virtualenvs.in-project true
+```
+
+Add this line to your `.bashrc` or `.bash_profile` so you do not have to type it every time you start your shell!
+
 ### Pointing Poetry to the Correct Python Version
 
-Like most tools, Poetry needs to be pointed to the correct Python version to work correctly. A common source of errors is Poetry using an unexpected Python version.
+Like most tools, Poetry needs to be pointed to the correct Python version to work correctly. A common source of errors is Poetry using an unexpected Python version. For example, if you have an older version of Python on your system and Poetry attempts to use this as your base Python, this may cause compatibility issues with more recently updated packages.
 
 By now, we should know how to find where the version of Python we want to work with is installed on our system (see earlier sections of this guide for a reminder). Find this path and note it.
 
-To check which version of Python poetry is currently configured to use, run the following.
+To check which version of Python poetry is currently configured to use, run the following. Note you must do this inside a poetry project. This tutorial provides a `poetry_demo` folder for this.
 
 ```bash
+cd poetry_demo
 poetry env info
 ```
 
@@ -955,30 +1076,44 @@ poetry env use ~/AppData/Local/Programs/Python/Python312/python.exe
 
 ### Using Poetry with VS Code
 
-When using Poetry with VS Code, we need to tell VS Code where to find the virtual environments that Poetry maintains for us. There are several ways we can do this.
+When using Poetry with VS Code, we need to tell VS Code where to find the virtual environments that Poetry maintains for us. There are several ways we can do this. This repository contains a `poetry_demo` folder that can be used to follow these steps for practice.
 
 #### Launching VS Code from Poetry's Shell
 
 Poetry comes with its own shell that you can start at any time from bash using the following command.
 
 ```bash
-cd poetry_project
+cd poetry_demo
 poetry shell
 ```
 
-Note we must type this command from inside Poetry's directory. Once inside Poetry's shell (if this command worked it will print a message telling you that you are in poetry's shell) we can launch VS Code.
+Note we must type this command from inside Poetry's directory. Once inside Poetry's shell (if this command worked it will print a message telling you that you are in poetry's shell) we can install the project.
+
+```bash
+poetry install
+```
+
+we can launch VS Code.
 
 ```bash
 code .
 ```
 
-This will start VS Code and we should be able to see the Poetry environment when running Python scripts or executing cells in notebooks. For example, to ensure a notebook uses Poetry's environment, navigate to the top corner of the notebook and click the `kernel` icon or the small icon showing the current version of python (e.g., `Python 3.12.1`). Click `Select Another Kernel`, then click `Python Environments...`, then click your preferred Poetry environment (it should say `Poetry Env`) next to it.
+This will start VS Code and we should be able to see the Poetry environment when running Python scripts or executing cells in notebooks. Navigate to the `poetry_demo/hello.py` file and open it.
+
+Now you will need to tell VS Code which of the potentially many Python versions you have on your system to use to run this file.
+
+Use `Ctrl` + `Shift` + `P` to open the command pallette and enter `Python: Select Interpreter`. Select the interpreter in `.venv/Scripts/python.exe`. This may be made easier by selecting the option to browse system files for the right Python interpreter. Remember that you need to use the Python interpreter in the `.venv` folder! This is the project-specific Python installation that Poetry has created for you in the current folder.
+
+Once you have selected the interpreter, click the play button (right facing triangle) to run the `hello.py` Python script. If you prefer command line usage, you can type
+
+```bash
+.venv/Scripts/python hello.py
+```
 
 #### Pointing VS Code to Poetry's Location for Storing Virtual Environments
 
-Launching VS Code from Poetry's shell is nice but what if we want to launch VS Code in a directory that sits outside a specific Poetry project and then migrate to a Poetry project within VS Code and use the Poetry environment?
-
-If we try to start Poetry's shell with `poetry shell` and we are outside a Poetry project, we will get an error message. Instead, we can launch code directly.
+Launching VS Code from Poetry's shell is sometimes convenient, but what if we want to launch VS Code in a directory that sits outside a specific Poetry project and then migrate to a Poetry project within VS Code and use the Poetry environment? Instead, we can launch code directly.
 
 ```bash
 code .
@@ -986,15 +1121,7 @@ code .
 
 Once in VS Code, we can use the side-panel to navigate to the project we want to use. Then we can open a terminal with `Ctrl` + `Shift` + `` ` ``.
 
-Tell Poetry you want it to create virtual environments in your current directory (so you can have different virtual environments per project).
-
-```bash
-poetry config virtualenvs.in-project true
-```
-
-Consider adding this line to your `.bashrc` or `.bash_profile`.
-
-Assuming we are already in the Poetry project directory (i.e., the directory that contains the `pyproject.toml`) we can then run the following command to see the list of Poetry environments available.
+Assuming we are already in the Poetry project directory (i.e., the directory that contains the `pyproject.toml`) and have performed the steps above to 1) configure virtual environments inside the project and 2) set the Python environment, we can then run the following command to see the list of Poetry environments available.
 
 ```bash
 poetry env list
@@ -1008,11 +1135,13 @@ poetry env info --path
 
 We can open the command pallette with `Ctrl` + `Shift` + `P` and type `Python: Select Interpreter`.
 
-Now specify that VS Code should use the that interpreter (the one in `./.venv/Scripts/python.exe`). Once you specify this, Jupyter notebooks should show the project's interpreter as an option when you click the `kernel` icon or the small icon showing the current version of python (e.g., `Python 3.12.1`) and then click `Select Another Kernel`, and finally click `Python Environments...`.
+Now specify that VS Code should use the that interpreter (the one in `./.venv/Scripts/python.exe` is the one we want here since we are using virtual environments inside our projects). Once you specify this, Python scripts should use the project's interpreter.
 
-### Basic Poetry Commands
+Jupyter notebooks will show the project's interpreter as an option when you click the `kernel` icon or the small icon showing the current version of python (e.g., `Python 3.12.1`) and then click `Select Another Kernel`, and finally click `Python Environments...`. A `hello.ipynb` notebook is provided as an example to try selecting the right interpreter for a Jupyter notebook.
 
-Poetry basics can be found [here](https://python-poetry.org/docs/basic-usage/). Information about managing poetry environments can be found [here](https://python-poetry.org/docs/managing-environments/).
+### Basic Poetry Commands Review
+
+Poetry basics can be found [here](https://python-poetry.org/docs/basic-usage/). Information about managing poetry environments can be found [here](https://python-poetry.org/docs/managing-environments/). We have used some of these already in this tutorial.
 
 #### Creating a New Project
 
@@ -1053,35 +1182,7 @@ Use this command to install the dependencies in the `pyproject.toml` only (but n
 poetry install --no-root
 ```
 
-## Common Issues
-
-### Jupyter Kernels Do Not Show Up in VS Code when Using Codespaces
-
-When using a Jupyter notebook in VS Code it is necessary to select the kernel your want to use for the Jupyter notebook in the top right corner. If no kernels show up, that means that VS Code does not know where to find Python on your system. A few different fixes might be required depending on your specific environment, but some steps to try for different versions of this problem are listed in the following sections.
-
-#### When Using Codespaces in Browser
-
-In the browser, this can be fixed by finding the path to the virtual environment Poetry maintains.
-
-```bash
-poetry env info --path
-```
-
-Use `Ctrl/Cmd` + `Shift` + `P` &rarr; `Python: Select Interpreter` &rarr;  `Enter Interpreter Path` to tell VS Code to use this path.
-
-#### When using Codespaces Locally (Observed with MacOS)
-
-When using codespaces locally, try installing and uninstalling the `jupyter` extension by clicking `Extensions` &rarr; `Jupyter` &rarr; `Uninstall` &rarr; `Reinstall`.
-
-Then be sure the correct interpreter path is set by finding the path to Poetry's virtual environment
-
-```bash
-poetry env info --path
-```
-
-and then using `Ctrl/Cmd` + `Shift` + `P` &rarr; `Python: Select Interpreter` &rarr;  `Enter Interpreter Path` to tell VS Code to use this path.
-
-## First Task: Setting Up Git and Cloning a Repository with SSH
+## Setting Up Git and Cloning a Repository
 
 ### Introduction
 
@@ -1096,7 +1197,9 @@ git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 ```
 
-### How to Set Up SSH Keys
+### Optional: How to Set Up SSH Keys
+
+Git provides multiple options for cloning repositories. In this class we will use HTTPS. If you wish to use SSH instead, you may optionally do the following steps.
 
 To set up your SSH keys, first open Git Bash or the shell you are using for this class and then run the following command to generate a key.
 
@@ -1118,15 +1221,15 @@ Go to [https://github.com/settings/ssh/new](https://github.com/settings/ssh/new)
 
 You are now ready to clone the course syllabus!
 
-Go to a web browser and navigate to the syllabus page: [https://github.com/ruc-practical-ai/syllabus](https://github.com/ruc-practical-ai/syllabus).
+Go to a web browser and navigate to the syllabus page: [https://github.com/ruc-practical-ai-fall-2025/syllabus](https://github.com/ruc-practical-ai-fall-2025/syllabus).
 
-Then click the green `Code` button, click SSH, and copy the text there. Run the following command in Git Bash or your preferred shell to clone the repository.
+Then click the green `Code` button, click HTTPS, and copy the text there. Run the following command in Git Bash or your preferred shell to clone the repository.
 
 ```bash
 git clone PASTED-TEXT
 ```
 
-Replace the PASTED-TEXT with the text you copied from the drop down under `Code` on GitHub. The actual command you run should look something like the following.
+Replace the PASTED-TEXT with the text you copied from the drop down under `Code` on GitHub. The actual command you run should look something like the following (but not exactly since the path will be different).
 
 ```bash
 git clone git@github.com:ruc-practical-ai/syllabus.git
@@ -1138,20 +1241,16 @@ Be sure to do this in an area you have permissions to write, such as your home a
 cd ~
 ```
 
-Finally, you can open the syllabus in VS Code but navigating to the directory using the `cd` command and then opening VS Code using `code .`. The `.` tells VS Code to open in the current directory.
+Finally, you can open the syllabus in VS Code by navigating to the directory using the `cd` command and then opening VS Code using `code .`. The `.` tells VS Code to open in the current directory.
 
 ```bash
-cd 2024-spring-syllabus
+cd SYLLABUS-DIRECTORY # Change to directory with this year's syllabus
 code .
 ```
 
 Click on the `README.md` file to open it. There is a preview button in the top right corner of VS Code's screen which should allow you to view the file the same way it is viewed on the internet.
 
-Now the our development environment is set up we are ready to begin coding. This would be a good time to practice many of the commands for Git and Bash / Git Bash that were covered earlier in this course.
-
-Note that setting up your development environment can often be a frustrating part of joining any new professional software team. This is because the process can be different on different systems and different teams and individuals may prefer different tools. If the project is structured professionally though, team members should be able to contribute using their preferred environments. It only will get easier from here once we can start to use all the useful tools we just installed!
-
-## Optional Task: How to Make Your Own Repository
+## Optional: How to Make Your Own Repository
 
 ### Introduction
 
@@ -1165,17 +1264,17 @@ If you've never made a repository before then this page should be empty. Click t
 
 Give the repository a basic but descriptive name, such as "example" or "hello-world". Give it a description such as "Example repository for educational use."
 
-Make the repository Public. (You only get a set number of Private repositories when using the free version of GitHub so it is a good idea to use them sparingly.)
+Make the repository Public or Private. (You only get a set number of Private repositories when using the free version of GitHub so it is a good idea to use them sparingly.)
 
 Add a .gitignore template. Choose the `Python` option in the dropdown. The .gitignore file tells Git which files *not* to track. It is important for professional repositories to always have an appropriate .gitignore to prevent Git from tracking unnecessary (or worse, private) files. Add a README.md file.
 
-Leave the license set to `None` for now. Licenses are important when writing software personally or professionally but are outside the scope of this course.
+Leave the license set to `None` for now. Licenses are important when writing software personally or professionally but are outside the scope of this tutorial.
 
 Click `Create repository` to create your first repository!
 
 ### Cloning the Repository
 
-As we did above, clone the repository you just created. Do this by navigating to the repository page. For example, if you named your repository "example" you can find it at `https://github.com/YOUR-USERNAME/example`. Click the green `Code` button to grab the repository name you need to clone it. You can use HTTPS or SSH.
+As we did above, clone the repository you just created. Do this by navigating to the repository page. For example, if you named your repository "example" you can find it at `https://github.com/YOUR-USERNAME/example`. Click the green `Code` button to grab the repository name you need to clone it. Use HTTPS unless you set up SSH.
 
 Clone the file with the following commands.
 
@@ -1219,10 +1318,9 @@ git status
 
 Navigate back to your repository in your web browser to see your file there!
 
-
 ## Optional: GitHub Classroom CLI
 
-It may be helpful to interact with GitHub classroom through the command line. Note that this is different than interacting with git Git itself through the command line. GitHub classroom's CLI uses the `gh` CLI, which is a tool for interacting with GitHub specifically (not Git) through the command line.
+We will use GitHub Classroom often in this course. GitHub Classroom is a website for hosting assignments and does not in and of itself require installing anything. It may be helpful to interact with GitHub classroom through the command line, however. Note that this is different than interacting with git Git itself through the command line. GitHub classroom's CLI uses the `gh` CLI, which is a tool for interacting with GitHub specifically (not Git) through the command line.
 
 Install GitHub's CLI by following the instructions [here](https://github.com/cli/cli#installation). If installing on Windows, you should have `winget` and be able to use `winget` from within Git Bash.
 
@@ -1268,3 +1366,38 @@ gh extension install github/gh-classroom
 ```
 
 Look at the instructions [here](https://docs.github.com/en/education/manage-coursework-with-github-classroom/teach-with-github-classroom/using-github-classroom-with-github-cli) to learn more commands with GitHub classroom CLI. If you like working on the CLI, these commands might save you time.
+
+## Common Issues
+
+### Jupyter Kernels Do Not Show Up in VS Code when Using Codespaces
+
+When using a Jupyter notebook in VS Code it is necessary to select the kernel your want to use for the Jupyter notebook in the top right corner. If no kernels show up, that means that VS Code does not know where to find Python on your system. A few different fixes might be required depending on your specific environment, but some steps to try for different versions of this problem are listed in the following sections.
+
+#### When Using Codespaces in Browser
+
+In the browser, this can be fixed by finding the path to the virtual environment Poetry maintains.
+
+```bash
+poetry env info --path
+```
+
+Use `Ctrl/Cmd` + `Shift` + `P` &rarr; `Python: Select Interpreter` &rarr;  `Enter Interpreter Path` to tell VS Code to use this path.
+
+#### When using Codespaces Locally (Observed with MacOS)
+
+When using codespaces locally, try installing and uninstalling the `jupyter` extension by clicking `Extensions` &rarr; `Jupyter` &rarr; `Uninstall` &rarr; `Reinstall`.
+
+Then be sure the correct interpreter path is set by finding the path to Poetry's virtual environment
+
+```bash
+poetry env info --path
+```
+
+and then using `Ctrl/Cmd` + `Shift` + `P` &rarr; `Python: Select Interpreter` &rarr;  `Enter Interpreter Path` to tell VS Code to use this path.
+
+
+## Final Notes
+
+Now the our development environment is set up we are ready to begin coding! This would be a good time to practice many of the commands for Git and Bash / Git Bash that were covered earlier in this tutorial.
+
+Note that setting up your development environment can often be a frustrating part of joining any new professional software team. This is because the process can be different on different systems and different teams and individuals may prefer different tools. If the project is structured professionally though, team members should be able to contribute using their preferred environments. It only will get easier from here once we can start to use all the useful tools we just installed!
