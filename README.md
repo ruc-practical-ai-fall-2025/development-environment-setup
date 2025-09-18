@@ -52,7 +52,7 @@ We interact with Git through a command line interface (CLI) in a shell or throug
 
 Using Git to download a version controlled repository from the internet (in this class) or a cloud environment (in many professional settings) is called *cloning* the repository.
 
-The following command shows how to clone the syllabus.
+The following command shows how to clone the syllabus. You will need to edit it slightly if this year's class has a different link.
 
 ```bash
 git clone git@github.com:ruc-practical-ai/syllabus.git
