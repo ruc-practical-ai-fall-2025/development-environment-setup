@@ -831,8 +831,6 @@ Note the path for the Python version you intend to use. Open your User Setting J
 
 Using tools like Poetry, we will also be generating Python virtual environments inside our project folders. This allows each project to maintain its own version of Python with its own project-specific list of packages. To tell VS Code where these are, you will want to add them to your settings (using the same commands as above). Adding the directories `./.venv/bin` and `./.venv/lib` to your `python.autoComplete.extraPaths` and `python.analysis.extraPaths` lists will ensure that Python autocomplete and analysis tools look in these locations for a version of Python and associated packages in addition to the base version of Python that you have installed on your system.
 
-TODO
-
 ```json
 "python.autoComplete.extraPaths": [
     "./.venv/bin",
