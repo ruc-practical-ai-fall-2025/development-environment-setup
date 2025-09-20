@@ -11,7 +11,7 @@ The following tools are required for this course. We will introduce all of them 
 * **Git**: distributed version control system
 * **GitHub**: popular website for hosting Git repositories
 * **Git Bash**: Linux-like command prompt for windows (comes with Git on Windows)
-* **Python**: programming language ubiquitous in data science and machine learning (the latest version is 3.13 and is recommended)
+* **Python**: programming language ubiquitous in data science and machine learning (the latest version is 3.13, however, **3.12 is recommended** since 3.13 is not yet fully compatible with all the tools we will use)
 * **Jupyter**: notebook environment for developing in Python
 * **VS Code**: free IDE by Microsoft
 * **Poetry**: tool for keeping track of Python dependencies
