@@ -984,16 +984,9 @@ This is a lighter weight method of managing the project's dependencies in a self
 
 See the official installation instructions for Poetry [here](https://python-poetry.org/docs/#installing-with-the-official-installer).
 
-For Windows users, the PowerShell method is recommended and summarized below.
+Note that the official installation instructions will recommend different aliases for Python (e.g., `py`, `python`, etc.). Be sure that when you type the command, you replace this with an alias to the Python version you actually want to use to install poetry. Confirm with `python --version` or `py --version` that the alias you are about to use points to the Python you think it does before you actually run the command.
 
-Open PowerShell and run the following command.
-```PowerShell
-(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
-```
-
-If you have installed Python through the Microsoft Store, replace py with python in the command above.
-
-For Poetry to work properly, it will need to be on your path so that your shell knows where to find it. To do this, you will first need to know where Poetry was installed to. The best way to do this is to note where the installer placed it. If you did not note where the installer placed it, you might need to look around your system. Try searching to see where Poetry is typically installed for your OS. For Windows, Poetry is usually placed in a subfolder under `$APPDATA`. You can find our where `$APPDATA` is by opening Git Bash and doing:
+**IMPORTANT**: For Poetry to work properly, it will need to be on your path so that your shell knows where to find it. To do this, you will first need to know where Poetry was installed to. The best way to do this is to note where the installer placed it. If you did not note where the installer placed it, you might need to look around your system. Try searching to see where Poetry is typically installed for your OS. For Windows, Poetry is usually placed in a subfolder under `$APPDATA`. You can find our where `$APPDATA` is by opening Git Bash and doing:
 
 ```bash
 echo "$APPDATA"
